@@ -1,0 +1,52 @@
+
+You are given a rooted tree that contains  nodes. Each node contains a lowercase alphabet.
+
+You are required to answer  queries of type , where  is an integer and  is a lowercase alphabet. The count of nodes in the subtree of the node  containing 
+is considered as the answer of all the queries. 
+
+
+vector<int> adj[200005];
+unordered_map<int,vector<int>> mp;
+
+void dfs(int node,int par,string &str){
+    mp[node][str[node]-'a']++;
+    for(auto var:adj[node]){
+        if(var!=par){
+            dfs(var,node,str);
+           for(int k=0;k<26;k++){
+               mp[node][k]+=mp[var][k];
+           }
+        }
+    }
+    
+}
+void solve() {
+    int n,q;
+    cin>>n>>q;
+
+    string str;
+    str.push_back('.');
+    string variable;
+    cin>>variable;
+    str+=variable;
+    for(int i=1;i<=n;i++){
+        vector<int> arr(26,0);
+        mp[i]=arr;
+    }
+    for(int i=0;i<n-1;i++){
+        int u,v;
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    dfs(1,-1,str);
+
+    while(q--){
+        int node;
+        char temp;
+        cin>>node>>temp;
+        cout<<mp[node][temp-'a']<<"\n";
+    }
+}
+ 
