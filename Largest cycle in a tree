@@ -1,0 +1,40 @@
+You are given a tree of  nodes and  edges. Now you need to select two nodes  and  in the tree such that the cycle that 
+will be formed after adding an edge between the two nodes  and , its length should be maximum. 
+If there are more than one possible answers, you can output any of them.
+
+
+
+vector<int> adj[200005];
+int x,ans;
+void dfs(int node,int par,int d){
+    for(auto var:adj[node]){
+        if(var!=par){
+            dfs(var,node,d+1);
+        }
+    }
+    if(ans<d) x=node,ans=d;
+}
+void solve() {
+   int n;
+   cin>>n;
+
+   for(int i=0;i<n-1;i++){
+       int u,v;
+       cin>>u>>v;
+       adj[u].push_back(v);
+       adj[v].push_back(u);
+   }
+   x=0,ans=0;
+
+   dfs(1,0,0);
+   int temp=x;
+   dfs(x,0,0);
+   if(x==temp){
+       x=1;
+   }
+   if(x>temp){
+       swap(x,temp);
+   }
+   cout<<x<<" "<<temp;
+
+}
